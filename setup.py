@@ -11,13 +11,9 @@ setup(
         'numpy',
         'pillow'
     ],
-    license='MIT',
     package_dir={'': 'src'},
     classifiers=[
           'Intended Audience :: Developers',
-          'Operating System :: MacOS :: MacOS X',
-          'Operating System :: Microsoft :: Windows',
-          'Operating System :: POSIX',
           'Programming Language :: Python',
           ],
 )
