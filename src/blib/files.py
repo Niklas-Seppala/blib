@@ -14,7 +14,7 @@ class Files:
     @classmethod
     def set_in_path(cls, path: str):
         cls.in_path = path
-        cls.index_path = path.join(cls.in_path, 'index.json')
+        cls.index_path = f'{path}index.json'
 
     @staticmethod
     def get_img_path_by_id(id: int):

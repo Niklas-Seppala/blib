@@ -8,5 +8,4 @@ def init(out='', src=''):
         Files.set_out_path(out)
     if src:
         Files.set_in_path(src)
-
     index.load()

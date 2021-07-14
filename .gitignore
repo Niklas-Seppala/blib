@@ -3,3 +3,6 @@
 **/__pycache__
 **/out
 **dev*
+**/dist
+**/*egg-info
+**/build
