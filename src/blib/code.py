@@ -2,34 +2,40 @@ from typing import Generator, List
 from .layer import Layer
 from hashlib import md5
 
-
-def _divide_to_layers(code: list[str], count: int, chunk_count: int):
-    for i in range(0, count, chunk_count):
-        yield code[i:i + chunk_count]
-
 class Code:
+    """Object that contains the parsed layers
+    of the banner code."""
+
     layers: list[Layer] = []
     layer_count = 0  # Acts also as a z-index for layer during parsing.
     hash: str
 
     def __init__(self, encoded: str):
-        sections, c = self._split_to_sections(encoded)
+        sections, count = self._split_to_sections(encoded)
         # Banner layer must have atleast 10 sections.
-        if c % 10 != 0:
+        if count % 10 != 0:
             raise ValueError('Invalid banner code.')
-        layers = _divide_to_layers(sections, c, Layer.SECT_COUNT)
+        layers = self._divide_to_layers(sections, count)
         self._parse_layers(layers)
         self._hash_banner_code(encoded)
 
     def bg_layer(self) -> Layer:
+        """
+        Returns:
+            Layer: Background layer.
+        """
         return self.layers[0]
 
     def fg_layers(self) -> list[Layer]:
+        """
+        Returns:
+            list[Layer]: List of the foreground layers.
+        """
         return self.layers[1:]
 
-    def _divide_to_layers(self, code: list[str], count: int, chunk_size: int):
-        for i in range(0, count, chunk_size):
-            yield code[i:i + chunk_size]
+    def _divide_to_layers(self, code: list[str], count: int):
+        for i in range(0, count, Layer.SECT_COUNT):
+            yield code[i:i + Layer.SECT_COUNT]
 
     def _hash_banner_code(self, encoded: str):
         self.hash = md5(encoded.encode('utf-8')).hexdigest()
@@ -43,7 +49,7 @@ class Code:
                 raise ValueError(
                     f'Parse error occured on layer {self.layer_count}.')
 
-    def _split_to_sections(self, encoded: str):
+    def _split_to_sections(self, encoded: str) -> tuple[list[str], int]:
         sections = encoded.split('.')
         count = len(sections)
         return sections, count

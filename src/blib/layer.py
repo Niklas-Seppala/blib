@@ -1,7 +1,6 @@
 from .utils import Vec3, RGBA
 from .index import index
 
-
 def _parse_bool(string: str) -> bool:
     if (string == '1'):
         return True
@@ -12,6 +11,8 @@ def _parse_bool(string: str) -> bool:
 
 
 class LayerColors:
+    """Data structure to hold layer's colors.
+    """
     main: RGBA
     accent: RGBA
 
@@ -24,6 +25,9 @@ class LayerColors:
 
 
 class Layer:
+    """Data structure to hold parsed layer data.
+    """
+
     SECT_COUNT = 10
 
     def __init__(self, layer_str: list[str], z_index: int, is_bg=False) -> None:
@@ -33,7 +37,6 @@ class Layer:
         self.pos: Vec3 = Vec3(int(layer_str[5]), int(layer_str[6]), z_index)
         self.draw_stroke: bool = _parse_bool(layer_str[7])
         self.mirror: bool = _parse_bool(layer_str[8])
-        self.hash = (self.size.x * 0xf1f1f1f1) ^ (self.size.y ^ self.mesh_id)
         self.colors: LayerColors = LayerColors(
             int(layer_str[1]), int(layer_str[2]), self.draw_stroke or is_bg)
-
+        self.hash = (self.size.x * 0xf1f1f1f1) ^ (self.size.y ^ self.mesh_id)
