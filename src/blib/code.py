@@ -1,4 +1,3 @@
-from typing import Generator, List
 from .layer import Layer
 from hashlib import md5
 
@@ -6,7 +5,7 @@ class Code:
     """Object that contains the parsed layers
     of the banner code."""
 
-    layers: list[Layer] = []
+    layers: list = []
     layer_count = 0  # Acts also as a z-index for layer during parsing.
     hash: str
 
@@ -26,21 +25,21 @@ class Code:
         """
         return self.layers[0]
 
-    def fg_layers(self) -> list[Layer]:
+    def fg_layers(self) -> list:
         """
         Returns:
             list[Layer]: List of the foreground layers.
         """
         return self.layers[1:]
 
-    def _divide_to_layers(self, code: list[str], count: int):
+    def _divide_to_layers(self, code: list, count: int):
         for i in range(0, count, Layer.SECT_COUNT):
             yield code[i:i + Layer.SECT_COUNT]
 
     def _hash_banner_code(self, encoded: str):
         self.hash = md5(encoded.encode('utf-8')).hexdigest()
 
-    def _parse_layers(self, layers: Generator[List[str], None, None]):
+    def _parse_layers(self, layers):
         self._create_layer(next(layers), is_bg=True)
         for layer in layers:
             try:
@@ -49,7 +48,7 @@ class Code:
                 raise ValueError(
                     f'Parse error occured on layer {self.layer_count}.')
 
-    def _split_to_sections(self, encoded: str) -> tuple[list[str], int]:
+    def _split_to_sections(self, encoded: str) -> tuple:
         sections = encoded.split('.')
         count = len(sections)
         return sections, count

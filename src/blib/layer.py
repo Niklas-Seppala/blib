@@ -30,7 +30,7 @@ class Layer:
 
     SECT_COUNT = 10
 
-    def __init__(self, layer_str: list[str], z_index: int, is_bg=False) -> None:
+    def __init__(self, layer_str: list, z_index: int, is_bg=False) -> None:
         self.mesh_id: int = int(layer_str[0])
         self.size: Vec3 = Vec3(int(layer_str[3]), int(
             layer_str[4]), int(layer_str[9]))

@@ -51,7 +51,7 @@ def draw_background(bg_layer: Layer) -> Image:
     return draw_layer(img, bg_layer, cache_miss=True)
 
 
-def draw_foreground(image: Image, bg_size: Vec3, layers: list[Layer]) -> Image:
+def draw_foreground(image: Image, bg_size: Vec3, layers: list) -> Image:
     """Draws all the foreground layers on top of the background
     layer.
 
