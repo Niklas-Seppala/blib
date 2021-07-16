@@ -1,9 +1,9 @@
-from blib.banner import Banner
-from blib.files import Files
-from blib.index import index
+from .banner import Banner
+from .files import Files
+from .index import index
 
 
-def init(out='', src=''):
+def blib_init(out='', src=''):
     if out:
         Files.set_out_path(out)
     if src:

@@ -1,25 +1,25 @@
 from os import path, getcwd
 import json
 
-from blib.files import Files
-from blib.rgba import RGBA
+from .files import Files
+from .utils import RGBA
 
 class Index:
-    content: dict = None
+    contents: dict = None
 
     def load(self):
         self.index_path = path.join(getcwd(), Files.index_path)
         with open(self.index_path) as f:
-            self.content = json.load(f)
+            self.contents = json.load(f)
 
     def backgrounds(self):
-        return self.content['backgrounds']
+        return self.contents['backgrounds']
 
     def icons(self):
-        return self.content['icons']
+        return self.contents['icons']
 
     def colors(self):
-        return self.content['colors']
+        return self.contents['colors']
 
     def get_real_color(self, color_id: int) -> RGBA:
         color = self.colors()[str(color_id)]['hex']

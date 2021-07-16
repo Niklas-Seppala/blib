@@ -2,9 +2,9 @@ from os import path, getcwd
 from pathlib import Path
 
 class Files:
-    in_path = '../img/'
-    out_path = './out/'
-    index_path = '../img/index.json'
+    in_path: str = None
+    out_path: str = None
+    index_path: str = None
 
     @classmethod
     def set_out_path(cls, path: str):
@@ -20,3 +20,20 @@ class Files:
     def get_img_path_by_id(id: int):
         return path.join(getcwd(), Files.in_path,
                         '{id}.png'.format(id=id))
+
+    class Format:
+        JPEG = 1
+        PNG = 2
+
+        str_map = {
+            1 : 'JPEG',
+            2 : 'PNG'
+        }
+
+        @classmethod
+        def str(cls, format: int):
+            result: str = cls.str_map.get(format)
+            if not result:
+                raise ValueError('Unknown image format.')
+            else:
+                return result

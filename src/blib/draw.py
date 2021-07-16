@@ -1,24 +1,19 @@
 import numpy as np
 from PIL import Image
 
-from .layer import Vec3, Layer
-from .rgba import RGBA
+from .files import Files
+from .layer import Layer, LayerColors
+from .utils import RGBA, Vec3
 
 banner_icon_cache: dict = {}
 
-def cache_get(asd):
-    return banner_icon_cache.get(asd)
-
-def cache_clear():
-    banner_icon_cache.clear()
-
-def recolor(data: np.ndarray, main: RGBA, accent: RGBA):
+def recolor(data: np.ndarray, colors: LayerColors):
     r, g, _, a = data.T
     red_mask = (r >= g) & (a > 10)
     green_mask = (g > r) & (a > 10)
 
-    data[...][green_mask.T] = main.unpack()
-    data[...][red_mask.T] = accent.unpack()
+    data[...][green_mask.T] = colors.main.unpack()
+    data[...][red_mask.T] = colors.accent.unpack()
 
 
 def resize_img(img: Image, size: Vec3, keep_ratio=True) -> Image:
@@ -44,21 +39,37 @@ def rotate_img(img: Image, size: Vec3):
         size.y = img.size[1]
     return img
 
+def draw_background(bg_layer: Layer) -> Image:
+    img = Image.open(Files.get_img_path_by_id(
+        bg_layer.mesh_id)).convert('RGBA')
+    result = draw_layer(img, bg_layer, cache_miss=True)
+    return result
 
-def draw_layer(img: Image, layer: Layer, layer_hash,
-               was_cache_miss: bool, is_bg=False) -> Image:
-    if was_cache_miss:
+def draw_foreground(image: Image, bg_layer, layers: list[Layer]) -> Image:
+    for layer in layers:
+        img = banner_icon_cache.get(layer.hash)
+        cache_miss = False
+        if not img:
+            img = Image.open(Files.get_img_path_by_id(
+                layer.mesh_id)).convert('RGBA')
+            cache_miss = True
+        img = draw_layer(img, layer, cache_miss=cache_miss)
+        image.paste(img, calc_pos(bg_layer.size, img.size,
+                                        layer.pos), mask=img)
+    banner_icon_cache.clear()
+    return image
+
+def draw_layer(img: Image, layer: Layer, cache_miss: bool) -> Image:
+    if cache_miss:
         img = resize_img(img, layer.size, keep_ratio=False)
-        banner_icon_cache[layer_hash] = img
+        banner_icon_cache[layer.hash] = img
 
     if layer.mirror:
         img = img.transpose(Image.FLIP_LEFT_RIGHT)
 
     img = rotate_img(img, layer.size)
-
-    main_c, accent_c = layer.get_layer_colors(is_bg)
     data = np.array(img)
-    recolor(data, main_c, accent_c)
+    recolor(data, layer.colors)
     return Image.fromarray(data)
 
 
