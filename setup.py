@@ -1,14 +1,13 @@
 from setuptools import setup
-
-# read the contents of your README file
 from os import path
-this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+
+this_dir = path.abspath(path.dirname(__file__))
+with open(path.join(this_dir, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
     name='blib',
-    version='0.0.2',
+    version='0.0.3',
     description='Package for drawing images of M@B Bannerlord banners from community created banner codes.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -22,6 +21,6 @@ setup(
     package_dir={'': 'src'},
     classifiers=[
           'Intended Audience :: Developers',
-          'Programming Language :: Python',
+          'Programming Language :: Python :: 3.6'
           ],
 )
