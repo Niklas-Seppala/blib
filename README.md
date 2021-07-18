@@ -1,21 +1,30 @@
 # blib - Banner Library 
 #### Library for drawing images of community created banners in M&B Bannerlord game. 
+<br>
 
-### Get started
+## Get started
 
-Download the source images in `img/`
+#### Download the source images in `img/`
 ```bash
 $ git clone -b source-img https://github.com/Niklas-Seppala/blib; \
 mv blib/img img/; \
 rm -rf blib
 ```
 
-Install blib
+#### Install blib
 ```bash
 $ pip install blib
 ```
+#### Workspace structure
+```bash
+.
+├── img/
+├── out/
+├── venv/
+└── app.py
+```
 
-Example usage
+#### app.py
 ```python
 from blib import blib_init, Banner, Files
 
@@ -24,6 +33,10 @@ code = '9.116.116.1327.1327.768.788.1.0.0.316.127.143.1080.3840.764.764.1.0.0.51
 b = Banner(code).rescale(0.5).crop(650, 500).save(Files.Format.PNG)
 
 ```
+
+<br>
+
+#### Result
 
 ![alt](https://github.com/Niklas-Seppala/blib/blob/readme/example/32c9bc5f52195c61bc669ac18d68522f.PNG)
 
