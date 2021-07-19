@@ -11,7 +11,6 @@ def recolor(data: np.ndarray, colors: LayerColors):
     r, g, _, a = data.T
     red_mask = (r >= g) & (a > 10)
     green_mask = (g > r) & (a > 10)
-
     data[...][green_mask.T] = colors.main.unpack()
     data[...][red_mask.T] = colors.accent.unpack()
 

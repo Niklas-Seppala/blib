@@ -1,6 +1,7 @@
 from .utils import Vec3, RGBA
 from .index import index
 
+
 def _parse_bool(string: str) -> bool:
     if (string == '1'):
         return True
@@ -11,23 +12,20 @@ def _parse_bool(string: str) -> bool:
 
 
 class LayerColors:
-    """Data structure to hold layer's colors.
-    """
+    """Data structure to hold layer's colors."""
     main: RGBA
     accent: RGBA
 
     def __init__(self, main_id: int, accent_id: int, stroke_or_bg: bool) -> None:
         self.main = index.get_real_color(main_id)
-        if stroke_or_bg:
-            self.accent = index.get_real_color(accent_id)
-        else:
-            self.accent = RGBA(a=0)
+        # If layer has outlines or is background layer, it should
+        # have an accent color.
+        self.accent = index.get_real_color(
+            accent_id) if stroke_or_bg else RGBA(a=0)
 
 
 class Layer:
-    """Data structure to hold parsed layer data.
-    """
-
+    """Data structure to hold parsed layer data."""
     SECT_COUNT = 10
 
     def __init__(self, layer_str: list, z_index: int, is_bg=False) -> None:

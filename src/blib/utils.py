@@ -35,6 +35,9 @@ class RGBA:
         """
         return cls(int(hex[1:3], 16), int(hex[3:5], 16), int(hex[5:7], 16))
 
+    def __repr__(self) -> str:
+        return f'({self.r}, {self.g}, {self.b}, {self.a})'
+
 
 class Vec3:
     """Vector with X, Y and Z values."""
