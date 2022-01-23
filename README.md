@@ -1,6 +1,5 @@
 # blib - Banner Library 
-#### Library for drawing images of community created banners in M&B Bannerlord game. 
-<br>
+### Library for drawing images of community created banners in M&B Bannerlord game. 
 
 ## Get started
 
