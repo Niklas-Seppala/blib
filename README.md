@@ -33,8 +33,6 @@ b = Banner(code).rescale(0.5).crop(650, 500).save(Files.Format.PNG)
 
 ```
 
-<br>
-
 #### Result
 
 ![alt](https://github.com/Niklas-Seppala/blib/blob/readme/example/32c9bc5f52195c61bc669ac18d68522f.PNG)
