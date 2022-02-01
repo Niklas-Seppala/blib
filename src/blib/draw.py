@@ -79,26 +79,26 @@ def draw_foreground(image: Image, bg_size: Vec3, layers: list) -> Image:
 def draw_layer(img: Image, layer: Layer, cache_miss: bool) -> Image:
     if cache_miss:
         img = resize_img(img, layer.size, keep_ratio=False)
-        cache[layer.hash] = img
+        cache[layer.id] = img
 
     if layer.mirror:
         img = img.transpose(Image.FLIP_LEFT_RIGHT)
 
     img = rotate_img(img, layer.size)
-    data = np.array(img)
+    data = np.asarray(img)
     recolor(data, layer.colors)
     return Image.fromarray(data)
 
 
 def calc_pos(bg_size: Vec3, src_img_size: list, pos: Vec3):
-    X, Y = 0, 1
+    x, y = 0, 1
     offset_x = 764
     offset_y = 764
 
     real_pos_x = pos.x - offset_x
     real_pos_y = pos.y - offset_y
 
-    center_p_x = int(bg_size.x / 2 - src_img_size[X] / 2)
-    center_p_y = int(bg_size.y / 2 - src_img_size[Y] / 2)
+    center_p_x = int(bg_size.x / 2 - src_img_size[x] / 2)
+    center_p_y = int(bg_size.y / 2 - src_img_size[y] / 2)
 
     return center_p_x + real_pos_x, center_p_y + real_pos_y

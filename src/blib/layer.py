@@ -28,6 +28,13 @@ class Layer:
     """Data structure to hold parsed layer data."""
     SECT_COUNT = 10
 
+    def hash(self):
+        self.id = 5381
+        self.id = ((self.id << 5) + self.id) + self.size.x    # Size x
+        self.id = ((self.id << 5) + self.id) + self.size.y    # Size y
+        self.id = ((self.id << 5) + self.id) + self.mesh_id   # Mesh
+
+
     def __init__(self, layer_str: list, z_index: int, is_bg=False) -> None:
         self.mesh_id: int = int(layer_str[0])
         self.size: Vec3 = Vec3(int(layer_str[3]), int(
@@ -37,4 +44,5 @@ class Layer:
         self.mirror: bool = _parse_bool(layer_str[8])
         self.colors: LayerColors = LayerColors(
             int(layer_str[1]), int(layer_str[2]), self.draw_stroke or is_bg)
-        self.hash = (self.size.x * 0xf1f1f1f1) ^ (self.size.y ^ self.mesh_id)
+        
+        self.hash()
